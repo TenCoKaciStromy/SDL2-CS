@@ -1,5 +1,0 @@
-C:\Users\TcKs\Documents\Visual Studio 2015\Projects\+Git\SDL2-CS\SDL2-PCL\obj\Debug\SDL2-PCL.csprojResolveAssemblyReference.cache
-C:\Users\TcKs\Documents\Visual Studio 2015\Projects\+Git\SDL2-CS\SDL2-PCL\bin\Debug\Allodium.SDL2.dll
-C:\Users\TcKs\Documents\Visual Studio 2015\Projects\+Git\SDL2-CS\SDL2-PCL\bin\Debug\Allodium.SDL2.pdb
-C:\Users\TcKs\Documents\Visual Studio 2015\Projects\+Git\SDL2-CS\SDL2-PCL\obj\Debug\Allodium.SDL2.dll
-C:\Users\TcKs\Documents\Visual Studio 2015\Projects\+Git\SDL2-CS\SDL2-PCL\obj\Debug\Allodium.SDL2.pdb
