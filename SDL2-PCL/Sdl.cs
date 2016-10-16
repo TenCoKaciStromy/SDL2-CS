@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Allodium.SDL2.Core;
 using Allodium.SDL2.Native;
+using static Allodium.SDL2.Native.SDL;
 
 namespace Allodium.SDL2 {
 	/// <summary>
@@ -77,7 +78,6 @@ namespace Allodium.SDL2 {
 			var prefix = methodName + ": ";
 			throw SdlNativeException.CreateFromLastSdlError(prefix);
 		}
-
 		private void ThrowIfSdlCallFails<TArg0>(Func<TArg0, int> tryFunction, TArg0 arg0, [CallerMemberName]string methodName = null) {
 			var resultCode = tryFunction(arg0);
 			if (0 == resultCode) { return; }
@@ -85,23 +85,72 @@ namespace Allodium.SDL2 {
 			var prefix = methodName + ": ";
 			throw SdlNativeException.CreateFromLastSdlError(prefix);
 		}
+		private void ThrowIfSdlCallFails<TArg0, TArg1>(Func<TArg0, TArg1, int> tryFunction, TArg0 arg0, TArg1 arg1, [CallerMemberName]string methodName = null) {
+			var resultCode = tryFunction(arg0, arg1);
+			if (0 == resultCode) { return; }
 
-		private TResult ThrowIfSdlCallFails<TResult>(Func<TResult> tryFunction, [CallerMemberName]string methodName = null) where TResult : class {
+			var prefix = methodName + ": ";
+			throw SdlNativeException.CreateFromLastSdlError(prefix);
+		}
+		private void ThrowIfSdlCallFails<TArg0, TArg1, TArg2>(Func<TArg0, TArg1, TArg2, int> tryFunction, TArg0 arg0, TArg1 arg1, TArg2 arg2, [CallerMemberName]string methodName = null) {
+			var resultCode = tryFunction(arg0, arg1, arg2);
+			if (0 == resultCode) { return; }
+
+			var prefix = methodName + ": ";
+			throw SdlNativeException.CreateFromLastSdlError(prefix);
+		}
+		private void ThrowIfSdlCallFails<TArg0, TArg1, TArg2, TArg3>(Func<TArg0, TArg1, TArg2, TArg3, int> tryFunction, TArg0 arg0, TArg1 arg1, TArg2 arg2, TArg3 arg3, [CallerMemberName]string methodName = null) {
+			var resultCode = tryFunction(arg0, arg1, arg2, arg3);
+			if (0 == resultCode) { return; }
+
+			var prefix = methodName + ": ";
+			throw SdlNativeException.CreateFromLastSdlError(prefix);
+		}
+
+		private TResult ThrowIfSdlFuncFails<TResult>(Func<TResult> tryFunction, [CallerMemberName]string methodName = null) where TResult : class {
 			var result = tryFunction();
 			if (null != result) { return result; }
 
 			var prefix = methodName + ": ";
 			throw SdlNativeException.CreateFromLastSdlError(prefix);
 		}
-		private TResult ThrowIfSdlCallFails<TArg0, TResult>(Func<TArg0, TResult> tryFunction, TArg0 arg0, [CallerMemberName]string methodName = null) where TResult : class {
+		private TResult ThrowIfSdlFuncFails<TArg0, TResult>(Func<TArg0, TResult> tryFunction, TArg0 arg0, [CallerMemberName]string methodName = null) where TResult : class {
 			var result = tryFunction(arg0);
 			if (null != result) { return result; }
 
 			var prefix = methodName + ": ";
 			throw SdlNativeException.CreateFromLastSdlError(prefix);
 		}
-		private TResult ThrowIfSdlCallFails<TArg0, TArg1, TResult>(Func<TArg0, TArg1, TResult> tryFunction, TArg0 arg0, TArg1 arg1, [CallerMemberName]string methodName = null) where TResult : class {
+		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TResult>(Func<TArg0, TArg1, TResult> tryFunction, TArg0 arg0, TArg1 arg1, [CallerMemberName]string methodName = null) where TResult : class {
 			var result = tryFunction(arg0, arg1);
+			if (null != result) { return result; }
+
+			var prefix = methodName + ": ";
+			throw SdlNativeException.CreateFromLastSdlError(prefix);
+		}
+		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TArg2, TResult>(Func<TArg0, TArg1, TArg2, TResult> tryFunction, TArg0 arg0, TArg1 arg1, TArg2 arg2, [CallerMemberName]string methodName = null) where TResult : class {
+			var result = tryFunction(arg0, arg1, arg2);
+			if (null != result) { return result; }
+
+			var prefix = methodName + ": ";
+			throw SdlNativeException.CreateFromLastSdlError(prefix);
+		}
+		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TArg2, TArg3, TResult>(Func<TArg0, TArg1, TArg2, TArg3, TResult> tryFunction, TArg0 arg0, TArg1 arg1, TArg2 arg2, TArg3 arg3, [CallerMemberName]string methodName = null) where TResult : class {
+			var result = tryFunction(arg0, arg1, arg2, arg3);
+			if (null != result) { return result; }
+
+			var prefix = methodName + ": ";
+			throw SdlNativeException.CreateFromLastSdlError(prefix);
+		}
+		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TArg2, TArg3, TArg4, TResult>(Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult> tryFunction, TArg0 arg0, TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4, [CallerMemberName]string methodName = null) where TResult : class {
+			var result = tryFunction(arg0, arg1, arg2, arg3, arg4);
+			if (null != result) { return result; }
+
+			var prefix = methodName + ": ";
+			throw SdlNativeException.CreateFromLastSdlError(prefix);
+		}
+		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult> tryFunction, TArg0 arg0, TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4, TArg5 arg5, [CallerMemberName]string methodName = null) where TResult : class {
+			var result = tryFunction(arg0, arg1, arg2, arg3, arg4, arg5);
 			if (null != result) { return result; }
 
 			var prefix = methodName + ": ";
@@ -118,10 +167,7 @@ namespace Allodium.SDL2 {
 		}
 
 		public SdlWindow CreateWindow(string title, int x, int y, int width, int height, SdlWindowCreationFlags creationFlags) {
-			var result = this.TryCreateWindow(title, x, y, width, height, creationFlags);
-			if (null != result) { return result; }
-
-			throw SdlNativeException.CreateFromLastSdlError("CreateWindow: ");
+			return this.ThrowIfSdlFuncFails(this.TryCreateWindow, title, x, y, width, height, creationFlags);
 		}
 		#endregion CreateWindow
 
@@ -138,12 +184,11 @@ namespace Allodium.SDL2 {
 			return new SdlRenderer(ptr, true);
 		}
 
-		public SdlRenderer CreateRenderer(SdlWindow window, SdlRenderingFlags renderingFlags) => CreateRenderer(window, DEFAULT_RENDERING_DRIVER_INDEX, renderingFlags);
+		public SdlRenderer CreateRenderer(SdlWindow window, SdlRenderingFlags renderingFlags) {
+			return this.ThrowIfSdlFuncFails(this.TryCreateRenderer, window, renderingFlags);
+		}
 		public SdlRenderer CreateRenderer(SdlWindow window, int renderingDriverIndex, SdlRenderingFlags renderingFlags) {
-			var result = TryCreateRenderer(window, renderingDriverIndex, renderingFlags);
-			if (null != result) { return result; }
-
-			throw SdlNativeException.CreateFromLastSdlError("CreateRenderer: ");
+			return this.ThrowIfSdlFuncFails(this.TryCreateRenderer, window, renderingDriverIndex, renderingFlags);
 		}
 		#endregion CreateRenderer
 
@@ -155,12 +200,7 @@ namespace Allodium.SDL2 {
 			return new SdlSurface(ptr, true);
 		}
 
-		public SdlSurface LoadBMP(string filePath) {
-			var result = this.TryLoadBMP(filePath);
-			if (null != result) { return result; }
-
-			throw SdlNativeException.CreateFromLastSdlError("LoadBMP: ");
-		}
+		public SdlSurface LoadBMP(string filePath) => ThrowIfSdlFuncFails(this.TryLoadBMP, filePath);
 		#endregion LoadBMP
 
 		#region CreateTextureFromSurface
@@ -177,7 +217,7 @@ namespace Allodium.SDL2 {
 			return new SdlTexture(ptr, true);
 		}
 
-		public SdlTexture CreateTextureFromSurface(SdlRenderer renderer, SdlSurface surface) => ThrowIfSdlCallFails(this.TryCreateTextureFromSurface, renderer, surface);
+		public SdlTexture CreateTextureFromSurface(SdlRenderer renderer, SdlSurface surface) => ThrowIfSdlFuncFails(this.TryCreateTextureFromSurface, renderer, surface);
 		#endregion CreateTextureFromSurface
 
 		#region EXT - CreateTextureFromBMP
@@ -189,7 +229,7 @@ namespace Allodium.SDL2 {
 				return TryCreateTextureFromSurface(renderer, bmp);
 			}
 		}
-		public SdlTexture CreateTextureFromBMP(SdlRenderer renderer, string filePath) => ThrowIfSdlCallFails(this.TryCreateTextureFromBMP, renderer, filePath);
+		public SdlTexture CreateTextureFromBMP(SdlRenderer renderer, string filePath) => ThrowIfSdlFuncFails(this.TryCreateTextureFromBMP, renderer, filePath);
 		#endregion EXT - CreateTextureFromBMP
 
 		#region RenderClear
@@ -202,5 +242,69 @@ namespace Allodium.SDL2 {
 		}
 		public void RenderClear(SdlRenderer renderer) => this.ThrowIfSdlCallFails(TryRenderClear, renderer);
 		#endregion RenderClear
+
+		#region RenderCopy
+		public int TryRenderCopy(SdlRenderer renderer, SdlTexture texture) => this.TryRenderCopy(renderer, texture, sourceRect: null, destinationRect: null);
+		public int TryRenderCopy(SdlRenderer renderer, SdlTexture texture, SdlRect? sourceRect, SdlRect? destinationRect) {
+			if (object.ReferenceEquals(renderer, null)) { throw new ArgumentNullException(nameof(renderer)); }
+			if (object.ReferenceEquals(texture, null)) { throw new ArgumentNullException(nameof(texture)); }
+
+			var ptrRenderer = renderer.GetValidHandle();
+			var ptrTexture = renderer.GetValidHandle();
+
+			int result;
+			if (sourceRect.HasValue && destinationRect.HasValue) {
+				var sdlSrcRect = (SDL_Rect)sourceRect.Value;
+				var sdlDstRect = (SDL_Rect)destinationRect.Value;
+				result = SDL.SDL_RenderCopy(ptrRenderer, ptrTexture, ref sdlSrcRect, ref sdlDstRect);
+			}
+			else if (sourceRect.HasValue && !destinationRect.HasValue) {
+				var sdlSrcRect = (SDL_Rect)sourceRect.Value;
+				result = SDL.SDL_RenderCopy(ptrRenderer, ptrTexture, ref sdlSrcRect, IntPtr.Zero);
+			}
+			else if (!sourceRect.HasValue && destinationRect.HasValue) {
+				var sdlDstRect = (SDL_Rect)destinationRect.Value;
+				result = SDL.SDL_RenderCopy(ptrRenderer, ptrTexture, IntPtr.Zero, ref sdlDstRect);
+			}
+			else if (!sourceRect.HasValue && !destinationRect.HasValue) {
+				result = SDL.SDL_RenderCopy(ptrRenderer, ptrTexture, IntPtr.Zero, IntPtr.Zero);
+			}
+			else {
+				throw new NotImplementedException("The combination of parameters is not implemented.");
+			}
+
+			return result;
+		}
+
+		public void RenderCopy(SdlRenderer renderer, SdlTexture texture) {
+			this.ThrowIfSdlCallFails(this.TryRenderCopy, renderer, texture);
+		}
+		public void RenderCopy(SdlRenderer renderer, SdlTexture texture, SdlRect? sourceRect, SdlRect? destinationRect) {
+			this.ThrowIfSdlCallFails(this.TryRenderCopy, renderer, texture, sourceRect, destinationRect);
+		}
+		#endregion RenderCopy
+
+		#region RenderPresent
+		public int TryRenderPresent(SdlRenderer renderer) {
+			if (null == renderer) { throw new ArgumentNullException(nameof(renderer)); }
+
+			var ptr = renderer.GetValidHandle();
+			SDL.SDL_RenderPresent(ptr);
+			return 0;
+		}
+
+		public void RenderPresent(SdlRenderer renderer) => this.ThrowIfSdlCallFails(this.TryRenderPresent, renderer);
+		#endregion RenderPresent
+
+		#region Delay
+		public int TryDelay(TimeSpan timeToDelay) => this.TryDelay((uint)timeToDelay.TotalMilliseconds);
+		public int TryDelay(uint milliseconds) {
+			SDL.SDL_Delay(milliseconds);
+			return 0;
+		}
+
+		public void Delay(TimeSpan timeToDelay) => this.ThrowIfSdlCallFails(this.TryDelay, timeToDelay);
+		public void Delay(uint milliseconds) => this.ThrowIfSdlCallFails(this.TryDelay, milliseconds);
+		#endregion Delay
 	}
 }
