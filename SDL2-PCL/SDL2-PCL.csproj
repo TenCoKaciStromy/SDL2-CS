@@ -54,6 +54,8 @@
     <Compile Include="SdlException.cs" />
     <Compile Include="SdlRenderer.cs" />
     <Compile Include="SdlRenderingFlags.cs" />
+    <Compile Include="SdlSurface.cs" />
+    <Compile Include="SdlTexture.cs" />
     <Compile Include="SdlWindow.cs" />
     <Compile Include="SdlWindowCreationFlags.cs" />
   </ItemGroup>

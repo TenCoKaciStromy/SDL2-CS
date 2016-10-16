@@ -10,6 +10,8 @@ namespace Allodium.SDL2.Core {
 	/// Base class for objects created by SDL native functions.
 	/// </summary>
 	public abstract class SdlObject : SafeHandle {
+		public Sdl Root => Sdl.Singleton;
+
 		public IntPtr Handle => this.handle;
 		public IntPtr GetValidHandle() {
 			var result = this.Handle;

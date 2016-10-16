@@ -7,12 +7,19 @@ using Allodium.SDL2.Core;
 using Allodium.SDL2.Native;
 
 namespace Allodium.SDL2 {
-	public sealed class SdlRenderer : SdlObject {
+	public sealed partial class SdlRenderer : SdlObject {
 		public SdlRenderer(IntPtr validHandle, bool ownsHandle) : base(validHandle, ownsHandle) { }
 
 		protected override bool ReleaseHandle() {
 			SDL.SDL_DestroyRenderer(this.handle);
 			return true;
 		}
+	}
+
+	partial class SdlRenderer {
+		public void Clear() => this.Root.RenderClear(this);
+
+		public SdlTexture CreateTexture(SdlSurface surface) => this.Root.CreateTextureFromSurface(this, surface);
+		public SdlTexture CreateTextureFromBMP(string filePath) => this.Root.CreateTextureFromBMP(this, filePath);
 	}
 }
