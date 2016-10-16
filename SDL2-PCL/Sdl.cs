@@ -107,49 +107,49 @@ namespace Allodium.SDL2 {
 			throw SdlNativeException.CreateFromLastSdlError(prefix);
 		}
 
-		private TResult ThrowIfSdlFuncFails<TResult>(Func<TResult> tryFunction, [CallerMemberName]string methodName = null) where TResult : class {
+		private TResult ThrowIfSdlFuncFails<TResult>(Func<TResult> tryFunction, [CallerMemberName]string methodName = null) {
 			var result = tryFunction();
 			if (null != result) { return result; }
 
 			var prefix = methodName + ": ";
 			throw SdlNativeException.CreateFromLastSdlError(prefix);
 		}
-		private TResult ThrowIfSdlFuncFails<TArg0, TResult>(Func<TArg0, TResult> tryFunction, TArg0 arg0, [CallerMemberName]string methodName = null) where TResult : class {
+		private TResult ThrowIfSdlFuncFails<TArg0, TResult>(Func<TArg0, TResult> tryFunction, TArg0 arg0, [CallerMemberName]string methodName = null) {
 			var result = tryFunction(arg0);
 			if (null != result) { return result; }
 
 			var prefix = methodName + ": ";
 			throw SdlNativeException.CreateFromLastSdlError(prefix);
 		}
-		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TResult>(Func<TArg0, TArg1, TResult> tryFunction, TArg0 arg0, TArg1 arg1, [CallerMemberName]string methodName = null) where TResult : class {
+		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TResult>(Func<TArg0, TArg1, TResult> tryFunction, TArg0 arg0, TArg1 arg1, [CallerMemberName]string methodName = null) {
 			var result = tryFunction(arg0, arg1);
 			if (null != result) { return result; }
 
 			var prefix = methodName + ": ";
 			throw SdlNativeException.CreateFromLastSdlError(prefix);
 		}
-		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TArg2, TResult>(Func<TArg0, TArg1, TArg2, TResult> tryFunction, TArg0 arg0, TArg1 arg1, TArg2 arg2, [CallerMemberName]string methodName = null) where TResult : class {
+		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TArg2, TResult>(Func<TArg0, TArg1, TArg2, TResult> tryFunction, TArg0 arg0, TArg1 arg1, TArg2 arg2, [CallerMemberName]string methodName = null) {
 			var result = tryFunction(arg0, arg1, arg2);
 			if (null != result) { return result; }
 
 			var prefix = methodName + ": ";
 			throw SdlNativeException.CreateFromLastSdlError(prefix);
 		}
-		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TArg2, TArg3, TResult>(Func<TArg0, TArg1, TArg2, TArg3, TResult> tryFunction, TArg0 arg0, TArg1 arg1, TArg2 arg2, TArg3 arg3, [CallerMemberName]string methodName = null) where TResult : class {
+		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TArg2, TArg3, TResult>(Func<TArg0, TArg1, TArg2, TArg3, TResult> tryFunction, TArg0 arg0, TArg1 arg1, TArg2 arg2, TArg3 arg3, [CallerMemberName]string methodName = null) {
 			var result = tryFunction(arg0, arg1, arg2, arg3);
 			if (null != result) { return result; }
 
 			var prefix = methodName + ": ";
 			throw SdlNativeException.CreateFromLastSdlError(prefix);
 		}
-		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TArg2, TArg3, TArg4, TResult>(Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult> tryFunction, TArg0 arg0, TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4, [CallerMemberName]string methodName = null) where TResult : class {
+		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TArg2, TArg3, TArg4, TResult>(Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult> tryFunction, TArg0 arg0, TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4, [CallerMemberName]string methodName = null) {
 			var result = tryFunction(arg0, arg1, arg2, arg3, arg4);
 			if (null != result) { return result; }
 
 			var prefix = methodName + ": ";
 			throw SdlNativeException.CreateFromLastSdlError(prefix);
 		}
-		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult> tryFunction, TArg0 arg0, TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4, TArg5 arg5, [CallerMemberName]string methodName = null) where TResult : class {
+		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult> tryFunction, TArg0 arg0, TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4, TArg5 arg5, [CallerMemberName]string methodName = null) {
 			var result = tryFunction(arg0, arg1, arg2, arg3, arg4, arg5);
 			if (null != result) { return result; }
 
@@ -306,5 +306,22 @@ namespace Allodium.SDL2 {
 		public void Delay(TimeSpan timeToDelay) => this.ThrowIfSdlCallFails(this.TryDelay, timeToDelay);
 		public void Delay(uint milliseconds) => this.ThrowIfSdlCallFails(this.TryDelay, milliseconds);
 		#endregion Delay
+
+		#region QueryTexture
+		public SdlVector? TryQueryTexture(SdlTexture texture) {
+			if (object.ReferenceEquals(texture, null)) { throw new ArgumentNullException(nameof(texture)); }
+
+			var ptrTexture = texture.GetValidPointer();
+			uint format;
+			int access, width, height;
+			var result = SDL.SDL_QueryTexture(ptrTexture, out format, out access, out width, out height);
+			if (0 != result) { return null; }
+
+			return new SdlVector(width, height);
+		}
+		public SdlVector QueryTexture(SdlTexture texture) {
+			return this.ThrowIfSdlFuncFails(this.TryQueryTexture, texture).Value;
+		}
+		#endregion QueryTexture
 	}
 }
