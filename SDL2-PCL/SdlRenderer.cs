@@ -24,5 +24,7 @@ namespace Allodium.SDL2 {
 
 		public void CopyFrom(SdlTexture texture) => this.Root.RenderCopy(this, texture);
 		public void CopyFrom(SdlTexture texture, SdlRect? sourceRect, SdlRect? destinationRect) => this.Root.RenderCopy(this, texture, sourceRect, destinationRect);
+
+		public void Present() => this.Root.RenderPresent(this);
 	}
 }

@@ -24,7 +24,7 @@ namespace Allodium.SDL2 {
 		/// </summary>
 		private Sdl() {
 			var current = Singleton;
-			if (!object.ReferenceEquals(current, null) || !object.ReferenceEquals(current, this)) {
+			if (!object.ReferenceEquals(current, null) && !object.ReferenceEquals(current, this)) {
 				throw new InvalidOperationException("The SdlEnvironment is already created. Use the static property 'Singleton'.");
 			}
 		}
@@ -250,7 +250,7 @@ namespace Allodium.SDL2 {
 			if (object.ReferenceEquals(texture, null)) { throw new ArgumentNullException(nameof(texture)); }
 
 			var ptrRenderer = renderer.GetValidHandle();
-			var ptrTexture = renderer.GetValidHandle();
+			var ptrTexture = texture.GetValidHandle();
 
 			int result;
 			if (sourceRect.HasValue && destinationRect.HasValue) {
