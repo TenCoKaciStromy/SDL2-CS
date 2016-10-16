@@ -177,7 +177,7 @@ namespace Allodium.SDL2 {
 		public SdlRenderer TryCreateRenderer(SdlWindow window, int renderingDriverIndex, SdlRenderingFlags renderingFlags) {
 			if (null == window) { throw new ArgumentNullException(nameof(window)); }
 
-			var ptrWindow = window.GetValidHandle();
+			var ptrWindow = window.GetValidPointer();
 			var ptr = SDL.SDL_CreateRenderer(ptrWindow, renderingDriverIndex, (SDL.SDL_RendererFlags)(uint)renderingFlags);
 			if (IntPtr.Zero == ptr) { return null; }
 
@@ -208,8 +208,8 @@ namespace Allodium.SDL2 {
 			if (null == renderer) { throw new ArgumentNullException(nameof(renderer)); }
 			if (null == surface) { throw new ArgumentNullException(nameof(surface)); }
 
-			var ptrRenderer = renderer.GetValidHandle();
-			var ptrSurface = surface.GetValidHandle();
+			var ptrRenderer = renderer.GetValidPointer();
+			var ptrSurface = surface.GetValidPointer();
 
 			var ptr = SDL.SDL_CreateTextureFromSurface(ptrRenderer, ptrSurface);
 			if (IntPtr.Zero == ptr) { return null; }
@@ -236,7 +236,7 @@ namespace Allodium.SDL2 {
 		public int TryRenderClear(SdlRenderer renderer) {
 			if (null == renderer) { throw new ArgumentNullException(nameof(renderer)); }
 
-			var ptr = renderer.GetValidHandle();
+			var ptr = renderer.GetValidPointer();
 			var result = SDL.SDL_RenderClear(ptr);
 			return result;
 		}
@@ -249,8 +249,8 @@ namespace Allodium.SDL2 {
 			if (object.ReferenceEquals(renderer, null)) { throw new ArgumentNullException(nameof(renderer)); }
 			if (object.ReferenceEquals(texture, null)) { throw new ArgumentNullException(nameof(texture)); }
 
-			var ptrRenderer = renderer.GetValidHandle();
-			var ptrTexture = texture.GetValidHandle();
+			var ptrRenderer = renderer.GetValidPointer();
+			var ptrTexture = texture.GetValidPointer();
 
 			int result;
 			if (sourceRect.HasValue && destinationRect.HasValue) {
@@ -288,7 +288,7 @@ namespace Allodium.SDL2 {
 		public int TryRenderPresent(SdlRenderer renderer) {
 			if (null == renderer) { throw new ArgumentNullException(nameof(renderer)); }
 
-			var ptr = renderer.GetValidHandle();
+			var ptr = renderer.GetValidPointer();
 			SDL.SDL_RenderPresent(ptr);
 			return 0;
 		}
