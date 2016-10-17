@@ -66,6 +66,7 @@
     <Compile Include="SdlTexture.cs" />
     <Compile Include="SdlWindow.cs" />
     <Compile Include="SdlWindowCreationFlags.cs" />
+    <Compile Include="SldSystemCursorKind.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

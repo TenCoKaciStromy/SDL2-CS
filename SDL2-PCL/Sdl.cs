@@ -453,6 +453,19 @@ namespace Allodium.SDL2 {
 		}
 		#endregion CreateRGBSurface
 
-		// public object asdf()=> SDL.SDL_CreateRGBSurface
+		#region CreateSystemCursor
+		public SdlCursor TryCreateSystemCursor(SldSystemCursorKind cursorKind) {
+			var result = SDL.SDL_CreateSystemCursor((SDL_SystemCursor)(int)cursorKind);
+			if (IntPtr.Zero == result) { return null; }
+
+			return new SdlCursor(result, true);
+		}
+
+		public SdlCursor CreateSystemCursor(SldSystemCursorKind cursorKind) {
+			return this.ThrowIfSdlFuncFails(this.TryCreateSystemCursor, cursorKind);
+		}
+		#endregion CreateSystemCursor
+
+		// public object asdf()=> SDL.SDL_CreateSystemCursor
 	}
 }
