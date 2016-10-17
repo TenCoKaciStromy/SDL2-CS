@@ -121,7 +121,7 @@ namespace Allodium.SDL2 {
 			var prefix = methodName + ": ";
 			throw SdlNativeException.CreateFromLastSdlError(prefix);
 		}
-		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TResult>(Func<TArg0, TArg1, TResult> tryFunction, TArg0 arg0, TArg1 arg1, [CallerMemberName]string methodName = null) where TResult : class {
+		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TResult>(Func<TArg0, TArg1, TResult> tryFunction, TArg0 arg0, TArg1 arg1, [CallerMemberName]string methodName = null) {
 			var result = tryFunction(arg0, arg1);
 			if (null != result) { return result; }
 
@@ -523,6 +523,42 @@ namespace Allodium.SDL2 {
 		}
 		#endregion FillRects
 
-		//public object asdf() => SDL.SDL_FillRects
+		#region GetClipboardText
+		public string TryGetClipboardText() {
+			var result = SDL.SDL_GetClipboardText();
+			return result;
+		}
+		public string GetClipboardText() {
+			return this.ThrowIfSdlFuncFails(this.TryGetClipboardText);
+		}
+		#endregion GetClipboardText
+
+		#region GetClipRect
+		public SdlRect TryGetClipRect(SdlSurface surface) {
+			if (null == surface) { throw new ArgumentNullException(nameof(surface)); }
+
+			var ptrSurface = surface.GetValidPointer();
+
+			SDL_Rect result;
+			SDL.SDL_GetClipRect(ptrSurface, out result);
+			return (SdlRect)result;
+		}
+		public SdlRect GetClipRect(SdlSurface surface) => this.TryGetClipRect(surface);
+		#endregion GetClipRect
+
+		#region GetClosestDisplayMode
+		public SdlDisplayMode? TryGetClosestDisplayMode(int displayIndex, SdlDisplayMode mode) {
+			var sdlMode = (SDL_DisplayMode)mode;
+			SDL_DisplayMode result;
+			SDL.SDL_GetClosestDisplayMode(displayIndex, ref sdlMode, out result);
+			return (SdlDisplayMode)result;
+		}
+
+		public SdlDisplayMode GetClosestDisplayMode(int displayIndex, SdlDisplayMode mode) {
+			return this.ThrowIfSdlFuncFails(this.TryGetClosestDisplayMode, displayIndex, mode).Value;
+		}
+		#endregion GetClosestDisplayMode
+
+		// public object asdf() => SDL.SDL_GetClosestDisplayMode
 	}
 }

@@ -50,6 +50,7 @@
     <Compile Include="Core\SafeHandles\SdlWindowSafeHandle.cs" />
     <Compile Include="InvalidSdlObjectException.cs" />
     <Compile Include="SdlCursor.cs" />
+    <Compile Include="SdlDisplayMode.cs" />
     <Compile Include="SdlInitializationFlags.cs" />
     <Compile Include="Native\SDL2.cs" />
     <Compile Include="Native\SDL2_image.cs" />
