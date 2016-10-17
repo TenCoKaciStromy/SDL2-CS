@@ -307,4 +307,119 @@ namespace Allodium.SDL2 {
 		public void Delay(uint milliseconds) => this.ThrowIfSdlCallFails(this.TryDelay, milliseconds);
 		#endregion Delay
 	}
+
+	partial class Sdl {
+		#region BlitSurface
+		public int TryBlitSurface(SdlSurface source, SdlSurface destination) {
+			return this.TryBlitSurface(source: source, sourceRect: null, destination: destination, destinationRect: null);
+		}
+		public int TryBlitSurface(SdlSurface source, SdlSurface destination, SdlRect? destinationRect) {
+			return this.TryBlitSurface(source: source, sourceRect: null, destination: destination, destinationRect: destinationRect);
+		}
+		public int TryBlitSurface(SdlSurface source, SdlRect? sourceRect, SdlSurface destination) {
+			return this.TryBlitSurface(source: source, sourceRect: sourceRect, destination: destination, destinationRect: null);
+		}
+		public int TryBlitSurface(SdlSurface source, SdlRect? sourceRect, SdlSurface destination, SdlRect? destinationRect) {
+			if (null == source) { throw new ArgumentNullException(nameof(source)); }
+			if (null == destination) { throw new ArgumentNullException(nameof(destination)); }
+
+			var ptrSource = source.GetValidPointer();
+			var ptrDestination = source.GetValidPointer();
+
+			int result;
+			if (sourceRect.HasValue && destinationRect.HasValue) {
+				var sdlSrcRect = (SDL_Rect)sourceRect.Value;
+				var sdlDstRect = (SDL_Rect)destinationRect.Value;
+				result = SDL.SDL_BlitSurface(ptrSource, ref sdlSrcRect, ptrDestination, ref sdlDstRect);
+			}
+			else if (sourceRect.HasValue && !destinationRect.HasValue) {
+				var sdlSrcRect = (SDL_Rect)sourceRect.Value;
+				result = SDL.SDL_BlitSurface(ptrSource, ref sdlSrcRect, ptrDestination, IntPtr.Zero);
+			}
+			else if (!sourceRect.HasValue && destinationRect.HasValue) {
+				var sdlDstRect = (SDL_Rect)destinationRect.Value;
+				result = SDL.SDL_BlitSurface(ptrSource, IntPtr.Zero, ptrDestination, ref sdlDstRect);
+			}
+			else if (!sourceRect.HasValue && !destinationRect.HasValue) {
+				result = SDL.SDL_BlitSurface(ptrSource, IntPtr.Zero, ptrDestination, IntPtr.Zero);
+			}
+			else {
+				throw new NotImplementedException("Processing the passed combination of parameters is not implemented.");
+			}
+
+			return result;
+		}
+
+		public void BlitSurface(SdlSurface source, SdlSurface destination) => this.ThrowIfSdlCallFails(this.TryBlitSurface, source, destination);
+		public void BlitSurface(SdlSurface source, SdlSurface destination, SdlRect? destinationRect) => this.ThrowIfSdlCallFails(this.TryBlitSurface, source, destination, destinationRect);
+		public void BlitSurface(SdlSurface source, SdlRect? sourceRect, SdlSurface destination) => this.ThrowIfSdlCallFails(this.TryBlitSurface, source, sourceRect, destination);
+		public void BlitSurface(SdlSurface source, SdlRect? sourceRect, SdlSurface destination, SdlRect? destinationRect) => this.ThrowIfSdlCallFails(this.TryBlitSurface, source, sourceRect, destination, destinationRect);
+		#endregion BlitSurface
+
+		#region BlitScaled
+		public int TryBlitScaled(SdlSurface source, SdlSurface destination) {
+			return this.TryBlitScaled(source: source, sourceRect: null, destination: destination, destinationRect: null);
+		}
+		public int TryBlitScaled(SdlSurface source, SdlSurface destination, SdlRect? destinationRect) {
+			return this.TryBlitScaled(source: source, sourceRect: null, destination: destination, destinationRect: destinationRect);
+		}
+		public int TryBlitScaled(SdlSurface source, SdlRect? sourceRect, SdlSurface destination) {
+			return this.TryBlitScaled(source: source, sourceRect: sourceRect, destination: destination, destinationRect: null);
+		}
+		public int TryBlitScaled(SdlSurface source, SdlRect? sourceRect, SdlSurface destination, SdlRect? destinationRect) {
+			if (null == source) { throw new ArgumentNullException(nameof(source)); }
+			if (null == destination) { throw new ArgumentNullException(nameof(destination)); }
+
+			var ptrSource = source.GetValidPointer();
+			var ptrDestination = source.GetValidPointer();
+
+			int result;
+			if (sourceRect.HasValue && destinationRect.HasValue) {
+				var sdlSrcRect = (SDL_Rect)sourceRect.Value;
+				var sdlDstRect = (SDL_Rect)destinationRect.Value;
+				result = SDL.SDL_BlitScaled(ptrSource, ref sdlSrcRect, ptrDestination, ref sdlDstRect);
+			}
+			else if (sourceRect.HasValue && !destinationRect.HasValue) {
+				var sdlSrcRect = (SDL_Rect)sourceRect.Value;
+				result = SDL.SDL_BlitScaled(ptrSource, ref sdlSrcRect, ptrDestination, IntPtr.Zero);
+			}
+			else if (!sourceRect.HasValue && destinationRect.HasValue) {
+				var sdlDstRect = (SDL_Rect)destinationRect.Value;
+				result = SDL.SDL_BlitScaled(ptrSource, IntPtr.Zero, ptrDestination, ref sdlDstRect);
+			}
+			else if (!sourceRect.HasValue && !destinationRect.HasValue) {
+				result = SDL.SDL_BlitScaled(ptrSource, IntPtr.Zero, ptrDestination, IntPtr.Zero);
+			}
+			else {
+				throw new NotImplementedException("Processing the passed combination of parameters is not implemented.");
+			}
+
+			return result;
+		}
+
+		public void BlitScaled(SdlSurface source, SdlSurface destination) => this.ThrowIfSdlCallFails(this.TryBlitScaled, source, destination);
+		public void BlitScaled(SdlSurface source, SdlSurface destination, SdlRect? destinationRect) => this.ThrowIfSdlCallFails(this.TryBlitScaled, source, destination, destinationRect);
+		public void BlitScaled(SdlSurface source, SdlRect? sourceRect, SdlSurface destination) => this.ThrowIfSdlCallFails(this.TryBlitScaled, source, sourceRect, destination);
+		public void BlitScaled(SdlSurface source, SdlRect? sourceRect, SdlSurface destination, SdlRect? destinationRect) => this.ThrowIfSdlCallFails(this.TryBlitScaled, source, sourceRect, destination, destinationRect);
+		#endregion BlitScaled
+
+		#region ClearError
+		public int TryClearError() {
+			SDL.SDL_ClearError();
+			return 0;
+		}
+		public void ClearError() => this.ThrowIfSdlCallFails(this.TryClearError);
+		#endregion ClearError
+
+		#region ClearHints
+		public int TryClearHints() {
+			SDL.SDL_ClearHints();
+			return 0;
+		}
+		public void ClearHints() => this.ThrowIfSdlCallFails(this.TryClearHints);
+		#endregion ClearHints
+
+		//public object asdf()=> SDL.SDL_CreateColorCursor
+	}
+
 }

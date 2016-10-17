@@ -41,12 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\SdlNativeException.cs" />
-    <Compile Include="Core\SdlRendererSafeHandle.cs" />
+    <Compile Include="Core\SafeHandles\SdlRendererSafeHandle.cs" />
     <Compile Include="Core\SdlSafeHandle.cs" />
     <Compile Include="Core\SdlObject.cs" />
-    <Compile Include="Core\SdlSurfaceSafeHandle.cs" />
-    <Compile Include="Core\SdlTextureSafeHandle.cs" />
-    <Compile Include="Core\SdlWindowSafeHandle.cs" />
+    <Compile Include="Core\SafeHandles\SdlSurfaceSafeHandle.cs" />
+    <Compile Include="Core\SafeHandles\SdlTextureSafeHandle.cs" />
+    <Compile Include="Core\SafeHandles\SdlWindowSafeHandle.cs" />
     <Compile Include="InvalidSdlObjectException.cs" />
     <Compile Include="SdlInitializationFlags.cs" />
     <Compile Include="Native\SDL2.cs" />
