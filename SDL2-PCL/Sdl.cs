@@ -323,5 +323,32 @@ namespace Allodium.SDL2 {
 			return this.ThrowIfSdlFuncFails(this.TryQueryTexture, texture).Value;
 		}
 		#endregion QueryTexture
+
+		#region GetWindowTitle
+		public string TryGetWindowTitle(SdlWindow window) {
+			if (null == window) { throw new ArgumentNullException(nameof(window)); }
+
+			var ptr = window.GetValidPointer();
+			var result = SDL.SDL_GetWindowTitle(ptr);
+			return result;
+		}
+		public string GetWindowTitle(SdlWindow window) => this.ThrowIfSdlFuncFails(this.TryGetWindowTitle, window);
+		#endregion GetWindowTitle
+
+		#region SetWindowTitle
+		public int TrySetWindowTitle(SdlWindow window, string title) {
+			if (null == window) { throw new ArgumentNullException(nameof(window)); }
+			if (null == title) { throw new ArgumentNullException(nameof(title)); }
+
+			var ptr = window.GetValidPointer();
+			SDL.SDL_SetWindowTitle(ptr, title);
+			return 0;
+		}
+		public void SetWindowTitle(SdlWindow window, string title) => this.ThrowIfSdlFuncFails(this.TrySetWindowTitle, window, title);
+		#endregion SetWindowTitle
+
+		#region GetWindowPosition
+		public 
+		#endregion GetWindowPosition
 	}
 }

@@ -17,10 +17,10 @@ namespace Allodium.SDL2 {
 	}
 
 	partial class SdlTexture {
-		public SdlVector Size { get; private set; }
+		public SdlVector Size { get; internal set; }
 		public SdlVector QuerySize() {
 			var result = this.Root.QueryTexture(this);
-			this.Size = result;
+			this.size = result;
 			return result;
 		}
 	}
