@@ -156,6 +156,13 @@ namespace Allodium.SDL2 {
 			var prefix = methodName + ": ";
 			throw SdlNativeException.CreateFromLastSdlError(prefix);
 		}
+		private TResult ThrowIfSdlFuncFails<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>(Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult> tryFunction, TArg0 arg0, TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4, TArg5 arg5, TArg6 arg6, [CallerMemberName]string methodName = null) where TResult : class {
+			var result = tryFunction(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+			if (null != result) { return result; }
+
+			var prefix = methodName + ": ";
+			throw SdlNativeException.CreateFromLastSdlError(prefix);
+		}
 		#endregion --- native call helpers ---
 
 		#region CreateWindow
@@ -433,7 +440,19 @@ namespace Allodium.SDL2 {
 		public SdlCursor CreateColorCursor(SdlSurface surface, int hotX, int hotY) => this.ThrowIfSdlFuncFails(this.TryCreateColorCursor, surface, hotX, hotY);
 		#endregion CreateColorCursor
 
-		//public object asdf()=> SDL.SDL_CreateColorCursor
-	}
+		#region CreateRGBSurface
+		public SdlSurface TryCreateRGBSurface(int width, int height, int depth, uint rMask, uint gMask, uint bMask, uint aMask) {
+			var result = SDL.SDL_CreateRGBSurface(0, width, height, depth, rMask, gMask, bMask, aMask);
+			if (IntPtr.Zero == result) { return null; }
 
+			return new SdlSurface(result, true);
+		}
+
+		public SdlSurface CreateRGBSurface(int width, int height, int depth, uint rMask, uint gMask, uint bMask, uint aMask) {
+			return this.ThrowIfSdlFuncFails(this.TryCreateRGBSurface, width, height, depth, rMask, gMask, bMask, aMask);
+		}
+		#endregion CreateRGBSurface
+
+		// public object asdf()=> SDL.SDL_CreateRGBSurface
+	}
 }
