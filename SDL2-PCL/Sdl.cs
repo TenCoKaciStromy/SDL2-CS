@@ -466,6 +466,48 @@ namespace Allodium.SDL2 {
 		}
 		#endregion CreateSystemCursor
 
-		// public object asdf()=> SDL.SDL_CreateSystemCursor
+		#region CreateWindowFrom
+		public SdlWindow CreateWindowFrom(IntPtr windowPointer) {
+			return this.CreateWindowFrom(windowPointer, false);
+		}
+		public SdlWindow CreateWindowFrom(IntPtr windowPointer, bool ownsHandle) {
+			var result = SDL.SDL_CreateWindowFrom(windowPointer);
+			if (IntPtr.Zero == result) { return null; }
+
+			return new SdlWindow(result, ownsHandle);
+		}
+		#endregion CreateWindowFrom
+
+		#region DisableScreenSaver
+		public int TryDisableScreenSaver() {
+			SDL.SDL_DisableScreenSaver();
+			return 0;
+		}
+		public void DisableScreenSave() => this.ThrowIfSdlCallFails(this.TryDisableScreenSaver);
+		#endregion DisableScreenSaver
+
+		#region EnableScreenSaver
+		public int TryEnableScreenSaver() {
+			SDL.SDL_EnableScreenSaver();
+			return 0;
+		}
+		public void EnableScreenSaver() => this.ThrowIfSdlCallFails(this.TryEnableScreenSaver);
+		#endregion EnableScreenSaver
+
+		#region FillRect
+		public int TryFillRect(SdlSurface surface, SdlRect rect, uint color) {
+			if (null == surface) { throw new ArgumentNullException(nameof(surface)); }
+
+			var sdlRect = (SDL_Rect)rect;
+			var ptrSurface = surface.GetValidPointer();
+			var result = SDL.SDL_FillRect(ptrSurface, ref sdlRect, color);
+			return result;
+		}
+		public void FillRect(SdlSurface surface, SdlRect rect, uint color) {
+			this.ThrowIfSdlCallFails(this.TryFillRect, surface, rect, color);
+		}
+		#endregion FillRect
+
+		//public object asdf() => SDL.SDL_FillRect
 	}
 }
