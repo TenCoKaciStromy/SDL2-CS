@@ -10,8 +10,12 @@ using Allodium.SDL2.Native;
 
 namespace Allodium.SDL2 {
 	public sealed partial class SdlWindow : SdlObject {
+		public SdlWindow(IntPtr validHandle, bool ownsHandle) : base(validHandle, ownsHandle) {
+		}
 		public SdlWindow(IntPtr validHandle, bool ownsHandle, string title, SdlVector position, SdlVector size) : base(validHandle, ownsHandle) {
 			this.title = title;
+			this.position = position;
+			this.size = size;
 		}
 
 		protected override SafeHandle CreateSdlSafeHandle(IntPtr validHandle, bool ownsHandle) {
@@ -34,6 +38,13 @@ namespace Allodium.SDL2 {
 				this.title = okValue;
 			}
 		}
+
+		public string RefreshTitle() {
+			var ptr = this.GetValidPointer();
+			var result = SDL.SDL_GetWindowTitle(ptr);
+			this.title = result;
+			return result;
+		}
 		#endregion Title
 
 		#region Position
@@ -46,6 +57,36 @@ namespace Allodium.SDL2 {
 				this.position = value;
 			}
 		}
+
+		public SdlVector RefreshPosition() {
+			var ptr = this.GetValidPointer();
+			int x, y;
+			SDL.SDL_GetWindowPosition(ptr, out x, out y);
+			var result = new SdlVector(x, y);
+			this.position = result;
+			return result;
+		}
 		#endregion Position
+
+		#region Size
+		private SdlVector size;
+		public SdlVector Size {
+			get { return this.size; }
+			set {
+				var ptr = this.GetValidPointer();
+				SDL.SDL_SetWindowSize(ptr, value.X, value.Y);
+				this.size = value;
+			}
+		}
+
+		public SdlVector RefreshSize() {
+			var ptr = this.GetValidPointer();
+			int x, y;
+			SDL.SDL_GetWindowSize(ptr, out x, out y);
+			var result = new SdlVector(x, y);
+			this.size = result;
+			return result;
+		}
+		#endregion Size
 	}
 }
