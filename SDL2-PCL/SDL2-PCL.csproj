@@ -40,14 +40,16 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\SafeHandles\SdlCursorSafeHandle.cs" />
     <Compile Include="Core\SdlNativeException.cs" />
-    <Compile Include="Core\SdlRendererSafeHandle.cs" />
+    <Compile Include="Core\SafeHandles\SdlRendererSafeHandle.cs" />
     <Compile Include="Core\SdlSafeHandle.cs" />
     <Compile Include="Core\SdlObject.cs" />
-    <Compile Include="Core\SdlSurfaceSafeHandle.cs" />
-    <Compile Include="Core\SdlTextureSafeHandle.cs" />
-    <Compile Include="Core\SdlWindowSafeHandle.cs" />
+    <Compile Include="Core\SafeHandles\SdlSurfaceSafeHandle.cs" />
+    <Compile Include="Core\SafeHandles\SdlTextureSafeHandle.cs" />
+    <Compile Include="Core\SafeHandles\SdlWindowSafeHandle.cs" />
     <Compile Include="InvalidSdlObjectException.cs" />
+    <Compile Include="SdlCursor.cs" />
     <Compile Include="SdlInitializationFlags.cs" />
     <Compile Include="Native\SDL2.cs" />
     <Compile Include="Native\SDL2_image.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="SdlTexture.cs" />
     <Compile Include="SdlWindow.cs" />
     <Compile Include="SdlWindowCreationFlags.cs" />
+    <Compile Include="SldSystemCursorKind.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

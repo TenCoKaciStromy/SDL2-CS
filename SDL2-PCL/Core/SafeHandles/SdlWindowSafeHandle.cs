@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Allodium.SDL2.Native;
 
-namespace Allodium.SDL2.Core {
+namespace Allodium.SDL2.Core.SafeHandles {
 	public sealed class SdlWindowSafeHandle : SdlSafeHandle {
 		public SdlWindowSafeHandle(IntPtr validHandle, bool ownsHandle) : base(validHandle, ownsHandle) { }
 

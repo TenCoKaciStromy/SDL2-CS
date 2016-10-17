@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Allodium.SDL2.Core;
+using Allodium.SDL2.Core.SafeHandles;
 using Allodium.SDL2.Native;
 
 namespace Allodium.SDL2 {
@@ -40,7 +41,8 @@ namespace Allodium.SDL2 {
 		public SdlVector Position {
 			get { return this.position; }
 			set {
-				SDL.SDL_SetWindowPosition(this, value.X, value.Y);
+				var ptr = this.GetValidPointer();
+				SDL.SDL_SetWindowPosition(ptr, value.X, value.Y);
 				this.position = value;
 			}
 		}
