@@ -508,6 +508,21 @@ namespace Allodium.SDL2 {
 		}
 		#endregion FillRect
 
-		//public object asdf() => SDL.SDL_FillRect
+		#region FillRects
+		public int TryFillRects(SdlSurface surface, IEnumerable<SdlRect> rects, uint color) {
+			if (null == surface) { throw new ArgumentNullException(nameof(surface)); }
+
+			var sdlRects = rects.Select(x => (SDL_Rect)x).ToArray();
+			var ptrSurface = surface.GetValidPointer();
+			var result = SDL.SDL_FillRects(ptrSurface, sdlRects, sdlRects.Length, color);
+			return result;
+		}
+
+		public void FillRects(SdlSurface surface, IEnumerable<SdlRect> rects, uint color) {
+			this.ThrowIfSdlCallFails(this.TryFillRects, surface, rects, color);
+		}
+		#endregion FillRects
+
+		//public object asdf() => SDL.SDL_FillRects
 	}
 }
