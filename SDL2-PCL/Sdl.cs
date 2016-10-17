@@ -419,6 +419,20 @@ namespace Allodium.SDL2 {
 		public void ClearHints() => this.ThrowIfSdlCallFails(this.TryClearHints);
 		#endregion ClearHints
 
+		#region CreateColorCursor
+		public SdlCursor TryCreateColorCursor(SdlSurface surface, int hotX, int hotY) {
+			if (null == surface) { throw new ArgumentNullException(nameof(surface)); }
+
+			var ptrSurface = surface.GetValidPointer();
+			var result = SDL.SDL_CreateColorCursor(ptrSurface, hotX, hotY);
+			if (IntPtr.Zero == result) { return null; }
+
+			return new SdlCursor(result, true);
+		}
+
+		public SdlCursor CreateColorCursor(SdlSurface surface, int hotX, int hotY) => this.ThrowIfSdlFuncFails(this.TryCreateColorCursor, surface, hotX, hotY);
+		#endregion CreateColorCursor
+
 		//public object asdf()=> SDL.SDL_CreateColorCursor
 	}
 

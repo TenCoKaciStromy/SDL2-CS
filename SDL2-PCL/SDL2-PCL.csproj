@@ -40,6 +40,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\SafeHandles\SdlCursorSafeHandle.cs" />
     <Compile Include="Core\SdlNativeException.cs" />
     <Compile Include="Core\SafeHandles\SdlRendererSafeHandle.cs" />
     <Compile Include="Core\SdlSafeHandle.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Core\SafeHandles\SdlTextureSafeHandle.cs" />
     <Compile Include="Core\SafeHandles\SdlWindowSafeHandle.cs" />
     <Compile Include="InvalidSdlObjectException.cs" />
+    <Compile Include="SdlCursor.cs" />
     <Compile Include="SdlInitializationFlags.cs" />
     <Compile Include="Native\SDL2.cs" />
     <Compile Include="Native\SDL2_image.cs" />
