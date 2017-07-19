@@ -6,10 +6,12 @@ using System.Text;
 namespace ObjectiveSdl2.Core
 {
     public abstract class SdlObject : ISdlObject {
+		protected SdlContext Sdl => SdlContext.Default;
+
 		private readonly SafeHandle handle;
 		SafeHandle ISdlObject.Handle => this.handle;
 
-		IntPtr ISdlObject.GetValidHandle() {
+		protected IntPtr GetValidHandle() {
 			var result = this.handle;
 			if (result is null || result.IsInvalid) {
 				throw new InvalidSdlObjectException();
@@ -17,6 +19,7 @@ namespace ObjectiveSdl2.Core
 
 			return handle.DangerousGetHandle();
 		}
+		IntPtr ISdlObject.GetValidHandle() => this.GetValidHandle();
 
 		public bool IsValid() => throw new NotImplementedException();
 		public bool IsInvalid() => throw new NotImplementedException();
