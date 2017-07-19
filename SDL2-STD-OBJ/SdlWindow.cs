@@ -77,4 +77,28 @@ namespace ObjectiveSdl2 {
 		public SdlVector SizeRefresh() => this.size = this.Sdl.GetWindowSize(this.GetValidHandle());
 		#endregion Size
 	}
+
+	partial class SdlWindow {
+		#region Renderer
+		private SdlRenderer renderer;
+		public SdlRenderer Renderer {
+			get => this.renderer;
+		}
+
+		public SdlRenderer GetRenderer() {
+			var result = this.renderer;
+			if (!(result is null)) {
+				if (result.IsInvalid()) {
+					this.renderer = result = null;
+				}
+			}
+
+			if (result is null) {
+				this.renderer = result = this.Sdl.GetRenderer(this.GetValidHandle());
+			}
+
+			return result;
+		}
+		#endregion Renderer
+	}
 }

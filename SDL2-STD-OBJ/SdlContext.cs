@@ -219,4 +219,103 @@ namespace ObjectiveSdl2 {
 		public void SetWindowSize(IntPtr ptrWindow, SdlVector value) => this.ThrowIfSdlCallFails(this.TrySetWindowSize, ptrWindow, value);
 	}
 	#endregion WindowSize
+
+
+	#region CreateRenderer
+	partial class SdlContext {
+		private const int DEFAULT_RENDERING_DRIVER_INDEX = -1;
+		public SdlRenderer TryCreateRenderer(IntPtr ptrWindow, SdlRenderingFlags renderingFlags) => this.TryCreateRenderer(ptrWindow, DEFAULT_RENDERING_DRIVER_INDEX, renderingFlags);
+		public SdlRenderer TryCreateRenderer(IntPtr ptrWindow, int renderingDriverIndex, SdlRenderingFlags renderingFlags) {
+			var ptr = SDL_CreateRenderer(ptrWindow, renderingDriverIndex, (SDL_RendererFlags)(uint)renderingFlags);
+			if (IntPtr.Zero == ptr) { return null; }
+
+			return new SdlRenderer(ptr, true);
+		}
+
+		public SdlRenderer CreateRenderer(IntPtr ptrWindow, SdlRenderingFlags renderingFlags) {
+			return this.ThrowIfSdlFuncFails(this.TryCreateRenderer, ptrWindow, renderingFlags);
+		}
+		public SdlRenderer CreateRenderer(IntPtr ptrWindow, int renderingDriverIndex, SdlRenderingFlags renderingFlags) {
+			return this.ThrowIfSdlFuncFails(this.TryCreateRenderer, ptrWindow, renderingDriverIndex, renderingFlags);
+		}
+	}
+	#endregion CreateRenderer
+
+	#region GetRenderer
+	partial class SdlContext {
+		public SdlRenderer TryGetRenderer(IntPtr ptrWindow) {
+			var ptr = SDL_GetRenderer(ptrWindow);
+			if (IntPtr.Zero == ptr) { return null; }
+
+			return new SdlRenderer(ptr, false);
+		}
+
+		public SdlRenderer GetRenderer(IntPtr ptrWindow) {
+			return this.ThrowIfSdlFuncFails(this.TryGetRenderer, ptrWindow);
+		}
+	}
+	#endregion GetRenderer
+
+
+	#region BlitSurface
+	partial class SdlContext {
+		public int TryBlitSurface(IntPtr ptrSource, IntPtr ptrDestination) {
+			return SDL_BlitSurface(ptrSource, IntPtr.Zero, ptrDestination, IntPtr.Zero);
+		}
+		public void BlitSurface(IntPtr ptrSource, IntPtr ptrDestination) {
+			this.ThrowIfSdlCallFails(this.TryBlitSurface, ptrSource, ptrDestination);
+		}
+
+		public int TryBlitSurface(IntPtr ptrSource, IntPtr ptrDestination, SdlRect destinationRect) {
+			var sdlDstRect = (SDL_Rect)destinationRect;
+			return SDL_BlitSurface(ptrSource, IntPtr.Zero, ptrDestination, ref sdlDstRect);
+		}
+		public void BlitSurface(IntPtr ptrSource, IntPtr ptrDestination, SdlRect destinationRect) {
+			this.ThrowIfSdlCallFails(this.TryBlitSurface, ptrSource, ptrDestination, destinationRect);
+		}
+
+		public int TryBlitSurface(IntPtr ptrSource, SdlRect sourceRect, IntPtr ptrDestination) {
+			var sdlSrcRect = (SDL_Rect)sourceRect;
+			return SDL_BlitSurface(ptrSource, ref sdlSrcRect, ptrDestination, IntPtr.Zero);
+		}
+		public void BlitSurface(IntPtr ptrSource, SdlRect sourceRect, IntPtr ptrDestination) {
+			this.ThrowIfSdlCallFails(this.TryBlitSurface, ptrSource, sourceRect, ptrDestination);
+		}
+
+		public int TryBlitSurface(IntPtr ptrSource, SdlRect sourceRect, IntPtr ptrDestination, SdlRect destinationRect) {
+			var sdlSrcRect = (SDL_Rect)sourceRect;
+			var sdlDstRect = (SDL_Rect)destinationRect;
+			return SDL_BlitSurface(ptrSource, ref sdlSrcRect, ptrDestination, ref sdlDstRect);
+		}
+		public void BlitSurface(IntPtr ptrSource, SdlRect sourceRect, IntPtr ptrDestination, SdlRect destinationRect) {
+			this.ThrowIfSdlCallFails(this.TryBlitSurface, ptrSource, sourceRect, ptrDestination, destinationRect);
+		}
+	}
+	#endregion BlitSurface
+
+	#region BlitScaled
+	partial class SdlContext {
+		public int TryBlitScaled(IntPtr ptrSource, IntPtr ptrDestination) {
+			return SDL_BlitScaled(ptrSource, IntPtr.Zero, ptrDestination, IntPtr.Zero);
+		}
+		public int TryBlitScaled(IntPtr ptrSource, IntPtr ptrDestination, SdlRect destinationRect) {
+			var sdlDstRect = (SDL_Rect)destinationRect;
+			return SDL_BlitScaled(ptrSource, IntPtr.Zero, ptrDestination, ref sdlDstRect);
+		}
+		public int TryBlitScaled(IntPtr ptrSource, SdlRect sourceRect, IntPtr ptrDestination) {
+			var sdlSrcRect = (SDL_Rect)sourceRect;
+			return SDL_BlitScaled(ptrSource, ref sdlSrcRect, ptrDestination, IntPtr.Zero);
+		}
+		public int TryBlitScaled(IntPtr ptrSource, SdlRect sourceRect, IntPtr ptrDestination, SdlRect destinationRect) {
+			var sdlSrcRect = (SDL_Rect)sourceRect;
+			var sdlDstRect = (SDL_Rect)destinationRect;
+			return SDL_BlitScaled(ptrSource, ref sdlSrcRect, ptrDestination, ref sdlDstRect);
+		}
+
+		public void BlitScaled(IntPtr ptrSource, IntPtr ptrDestination) => this.ThrowIfSdlCallFails(this.TryBlitScaled, ptrSource, ptrDestination);
+		public void BlitScaled(IntPtr ptrSource, IntPtr ptrDestination, SdlRect destinationRect) => this.ThrowIfSdlCallFails(this.TryBlitScaled, ptrSource, ptrDestination, destinationRect);
+		public void BlitScaled(IntPtr ptrSource, SdlRect sourceRect, IntPtr ptrDestination) => this.ThrowIfSdlCallFails(this.TryBlitScaled, ptrSource, sourceRect, ptrDestination);
+		public void BlitScaled(IntPtr ptrSource, SdlRect sourceRect, IntPtr ptrDestination, SdlRect destinationRect) => this.ThrowIfSdlCallFails(this.TryBlitScaled, ptrSource, sourceRect, ptrDestination, destinationRect);
+	}
+	#endregion BlitScaled
 }
