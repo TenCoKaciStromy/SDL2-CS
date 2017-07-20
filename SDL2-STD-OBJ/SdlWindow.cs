@@ -98,7 +98,7 @@ namespace ObjectiveSdl2 {
 				this.SetWindowSize(value.X, value.Y);
 			}
 		}
-		public SdlVector SizeRefresh() => this.size = this.Sdl.GetWindowSize(this.GetValidHandle());
+		public SdlVector SizeRefresh() => this.size = this.GetWindowSize();
 
 		private static SdlVector TryGetWindowSize(IntPtr ptrWindow) {
 			SDL2.SDL.SDL_GetWindowSize(ptrWindow, out var w, out var h);

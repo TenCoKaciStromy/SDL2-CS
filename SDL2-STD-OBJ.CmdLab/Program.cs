@@ -14,11 +14,14 @@ namespace SDL2_STD_OBJ.CmdLab
 
 		static void Main_B(string[] args) {
 			var window = SdlWindow.Create("My window", new SdlVector(10, 20), new SdlVector(640, 480));
-			var renderer = SdlContext.Default.CreateRenderer(((ISdlObject)window).GetValidHandle(), SdlRenderingFlags.Software);
+			// var renderer = SdlContext.Default.CreateRenderer(((ISdlObject)window).GetValidHandle(), SdlRenderingFlags.Software);
+			var renderer = window.Renderer;
 
 
-			var ptrBmp = SDL2.SDL.SDL_LoadBMP(@"C:\Users\TcKs\Pictures\screenshot.bmp");
-			var tex = SdlContext.Default.CreateTextureFromSufrace(((ISdlObject)renderer).GetValidHandle(), ptrBmp);
+			//var ptrBmp = SDL2.SDL.SDL_LoadBMP(@"C:\Users\TcKs\Pictures\screenshot.bmp");
+			//var tex = SdlContext.Default.CreateTextureFromSufrace(((ISdlObject)renderer).GetValidHandle(), ptrBmp);
+			var bmp = SdlSurface.LoadFromBmpFile(@"C:\Users\TcKs\Pictures\screenshot.bmp");
+			var tex = renderer.CreateTexture(bmp);
 
 			renderer.Clear();
 			renderer.CopyFrom(tex);
@@ -43,11 +46,14 @@ namespace SDL2_STD_OBJ.CmdLab
 		static void Main_A(string[] args) {
 			SdlMessageLoopAction(() => {
 				var window = SdlWindow.Create("My window", new SdlVector(10, 20), new SdlVector(640, 480));
-				var renderer = SdlContext.Default.CreateRenderer(((ISdlObject)window).GetValidHandle(), SdlRenderingFlags.Software);
+				//var renderer = SdlContext.Default.CreateRenderer(((ISdlObject)window).GetValidHandle(), SdlRenderingFlags.Software);
+				var renderer = window.Renderer;
 
 
-				var ptrBmp = SDL2.SDL.SDL_LoadBMP(@"C:\Users\TcKs\Pictures\screenshot.bmp");
-				var tex = SdlContext.Default.CreateTextureFromSufrace(((ISdlObject)renderer).GetValidHandle(), ptrBmp);
+				//var ptrBmp = SDL2.SDL.SDL_LoadBMP(@"C:\Users\TcKs\Pictures\screenshot.bmp");
+				//var tex = SdlContext.Default.CreateTextureFromSufrace(((ISdlObject)renderer).GetValidHandle(), ptrBmp);
+				var bmp = SdlSurface.LoadFromBmpFile(@"C:\Users\TcKs\Pictures\screenshot.bmp");
+				var tex = renderer.CreateTexture(bmp);
 
 				renderer.Clear();
 				renderer.CopyFrom(tex);

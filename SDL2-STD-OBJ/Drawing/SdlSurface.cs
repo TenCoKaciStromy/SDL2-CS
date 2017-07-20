@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using ObjectiveSdl2.Core;
+using ObjectiveSdl2.Core.SafeHandles;
 
 namespace ObjectiveSdl2.Drawing {
 	public sealed partial class SdlSurface : SdlObject {
 		public SdlSurface(SafeHandle validHandle) : base(validHandle) { }
 		public SdlSurface(IntPtr validHandle, bool ownsHandle) : base(validHandle, ownsHandle) { }
 
-		protected override SafeHandle CreateSdlSafeHandle(IntPtr validHandle, bool ownsHandle) => throw new NotImplementedException();
+		protected override SafeHandle CreateSdlSafeHandle(IntPtr validHandle, bool ownsHandle) => new SdlSurfaceSafeHandle(validHandle, ownsHandle);
 	}
 
 	partial class SdlSurface {
@@ -64,7 +65,7 @@ namespace ObjectiveSdl2.Drawing {
 		}
 		public void BlitFrom(SdlSurface source) {
 			var ptrSource = source.GetPointer();
-			this.Sdl.BlitSurface(ptrSource, this.GetValidHandle());
+			SdlCallUtil.ThrowIfSdlCallFails(TryBlitFrom, ptrSource, this.GetPointer());
 		}
 		#endregion BlitFrom
 
