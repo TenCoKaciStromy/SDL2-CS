@@ -35,7 +35,8 @@ namespace ObjectiveSdl2 {
 		}
 
 		public static SdlWindow Create(string title, SdlVector position, SdlVector size, SdlWindowCreationFlags creationFlags) {
-			return SdlContext.Default.CreateWindow(title, position.X, position.Y, size.X, size.Y, creationFlags);
+			var ptr = SDL2.SDL.SDL_CreateWindow(title, position.X, position.Y, size.X, size.Y, (SDL2.SDL.SDL_WindowFlags)(uint)creationFlags);
+			return new SdlWindow(ptr, true);
 		}
 	}
 
@@ -46,11 +47,19 @@ namespace ObjectiveSdl2 {
 			get => this.title;
 			set {
 				var okValue = value ?? string.Empty;
-				Sdl.SetWindowTitle(this.GetValidHandle(), okValue);
 				this.title = okValue;
+				this.SetWindowTitle(okValue);
 			}
 		}
-		public string TitleRefresh() => this.title = Sdl.GetWindowTitle(this);
+		public string TitleRefresh() => this.title = this.GetWindowTitle();
+
+		private static string TryGetWindowTitle(IntPtr ptrWindow) => SDL2.SDL.SDL_GetWindowTitle(ptrWindow);
+		private string GetWindowTitle() => SdlCallUtil.ThrowIfSdlFuncFails(TryGetWindowTitle, this.GetPointer());
+
+		private static void TrySetWindowTitle(IntPtr ptrWindow, string value) => SDL2.SDL.SDL_SetWindowTitle(ptrWindow, value);
+		private void SetWindowTitle(string value) {
+			SdlCallUtil.ThrowIfSdlActionFails(TrySetWindowTitle, this.GetPointer(), value);
+		}
 		#endregion Title
 
 		#region Position
@@ -58,11 +67,26 @@ namespace ObjectiveSdl2 {
 		public SdlVector Position {
 			get => this.position;
 			set {
-				this.Sdl.SetWindowPosition(this.GetValidHandle(), value);
 				this.position = value;
+				this.SetWindowPosition(value.X, value.Y);
 			}
 		}
-		public SdlVector PositionRefresh() => this.position = Sdl.GetWindowPosition(this.GetValidHandle());
+		public SdlVector PositionRefresh() => this.position = this.GetWindowPosition();
+
+		private static SdlVector TryGetWindowPosition(IntPtr ptrWindow) {
+			SDL2.SDL.SDL_GetWindowPosition(ptrWindow, out var x, out var y);
+			return new SdlVector(x, y);
+		}
+		private SdlVector GetWindowPosition() {
+			return SdlCallUtil.ThrowIfSdlFuncFails(TryGetWindowPosition, this.GetPointer());
+		}
+
+		private static void TrySetWindowPosition(IntPtr ptrWindow, int x, int y) {
+			SDL2.SDL.SDL_SetWindowPosition(ptrWindow, x, y);
+		}
+		private void SetWindowPosition(int x, int y) {
+			SdlCallUtil.ThrowIfSdlActionFails(TrySetWindowPosition, this.GetPointer(), x, y);
+		}
 		#endregion Position
 
 		#region Size
@@ -70,11 +94,26 @@ namespace ObjectiveSdl2 {
 		public SdlVector Size {
 			get => this.size;
 			set {
-				this.Sdl.SetWindowSize(this.GetValidHandle(), value);
 				this.size = value;
+				this.SetWindowSize(value.X, value.Y);
 			}
 		}
 		public SdlVector SizeRefresh() => this.size = this.Sdl.GetWindowSize(this.GetValidHandle());
+
+		private static SdlVector TryGetWindowSize(IntPtr ptrWindow) {
+			SDL2.SDL.SDL_GetWindowSize(ptrWindow, out var w, out var h);
+			return new SdlVector(w, h);
+		}
+		private SdlVector GetWindowSize() {
+			return SdlCallUtil.ThrowIfSdlFuncFails(TryGetWindowSize, this.GetPointer());
+		}
+
+		private static void TrySetWindowSize(IntPtr ptrWindow, int widht, int height) {
+			SDL2.SDL.SDL_SetWindowSize(ptrWindow, widht, height);
+		}
+		private void SetWindowSize(int widht, int height) {
+			SdlCallUtil.ThrowIfSdlActionFails(TrySetWindowSize, this.GetPointer(), widht, height);
+		}
 		#endregion Size
 	}
 
@@ -82,23 +121,56 @@ namespace ObjectiveSdl2 {
 		#region Renderer
 		private SdlRenderer renderer;
 		public SdlRenderer Renderer {
-			get => this.renderer;
+			get {
+				var result = this.renderer;
+				if (result?.IsValid() ?? false) {
+					return result;
+				}
+
+				var ptrSelf = this.GetPointer();
+				result = SdlRenderer.Get(ptrSelf);
+				if (result is null) {
+					return this.ResetRenderer();
+				}
+				this.renderer = result;
+				return result;
+			}
 		}
 
-		public SdlRenderer GetRenderer() {
-			var result = this.renderer;
-			if (!(result is null)) {
-				if (result.IsInvalid()) {
-					this.renderer = result = null;
-				}
+		public SdlRenderer ResetRenderer() {
+			return this.ResetRenderer(SdlRenderingFlags.Software);
+		}
+		public SdlRenderer ResetRenderer(SdlRenderingFlags renderingFlags) {
+			var prevRenderer = this.renderer;
+			if (!(prevRenderer is null)) {
+				prevRenderer.Dispose();
+				this.renderer = null;
 			}
 
-			if (result is null) {
-				this.renderer = result = this.Sdl.GetRenderer(this.GetValidHandle());
-			}
-
+			var result = SdlRenderer.Create(this.GetPointer(), renderingFlags);
+			this.renderer = result;
 			return result;
 		}
 		#endregion Renderer
+	}
+
+	partial class SdlWindow {
+		#region Show
+		private static void TryShowWindow(IntPtr ptrWindow) {
+			SDL2.SDL.SDL_ShowWindow(ptrWindow);
+		}
+		public void Show() {
+			SdlCallUtil.ThrowIfSdlActionFails(TryShowWindow, this.GetPointer());
+		}
+		#endregion Show
+
+		#region Raise
+		private static void TryRaiseWindow(IntPtr ptrWindow) {
+			SDL2.SDL.SDL_RaiseWindow(ptrWindow);
+		}
+		public void Raise() {
+			SdlCallUtil.ThrowIfSdlActionFails(TryRaiseWindow, this.GetPointer());
+		}
+		#endregion Raise
 	}
 }

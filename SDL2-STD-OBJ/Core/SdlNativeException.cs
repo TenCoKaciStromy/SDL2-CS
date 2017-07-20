@@ -28,5 +28,14 @@ namespace ObjectiveSdl2.Core
 
 			return result;
 		}
+		public static SdlNativeException CreateFromLastSdlError(string prefix, Exception innerException) {
+			var result = TryCreateFromLastSdlError();
+			if (object.ReferenceEquals(result, null)) {
+				var msg = $"{prefix}{innerException?.Message}";
+				throw new AggregateException(msg, innerException);
+			}
+
+			return result;
+		}
 	}
 }

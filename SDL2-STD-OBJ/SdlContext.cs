@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using ObjectiveSdl2.Core;
+using ObjectiveSdl2.Drawing;
 using static SDL2.SDL;
 
 namespace ObjectiveSdl2 {
@@ -220,6 +221,30 @@ namespace ObjectiveSdl2 {
 	}
 	#endregion WindowSize
 
+	#region ShowWindow
+	partial class SdlContext {
+		public int TryShowWindow(IntPtr ptrWindow) {
+			SDL_ShowWindow(ptrWindow);
+			return 0;
+		}
+		public void ShowWindow(IntPtr ptrWindow) {
+			this.ThrowIfSdlCallFails(this.TryShowWindow, ptrWindow);
+		}
+	}
+	#endregion ShowWindow
+
+	#region RaiseWindow
+	partial class SdlContext {
+		public int TryRaiseWindow(IntPtr ptrWindow) {
+			SDL_RaiseWindow(ptrWindow);
+			return 0;
+		}
+		public void RaiseWindow(IntPtr ptrWindow) {
+			this.ThrowIfSdlCallFails(this.TryRaiseWindow, ptrWindow);
+		}
+	}
+	#endregion RaiseWindow
+
 
 	#region CreateRenderer
 	partial class SdlContext {
@@ -318,4 +343,99 @@ namespace ObjectiveSdl2 {
 		public void BlitScaled(IntPtr ptrSource, SdlRect sourceRect, IntPtr ptrDestination, SdlRect destinationRect) => this.ThrowIfSdlCallFails(this.TryBlitScaled, ptrSource, sourceRect, ptrDestination, destinationRect);
 	}
 	#endregion BlitScaled
+
+
+	#region RenderClear
+	partial class SdlContext {
+		public int TryRenderClear(IntPtr ptrRenderer) {
+			return SDL_RenderClear(ptrRenderer);
+		}
+		public void RenderClear(IntPtr ptrRenderer) => this.ThrowIfSdlCallFails(TryRenderClear, ptrRenderer);
+	}
+	#endregion RenderClear
+
+	#region RenderCopy
+	partial class SdlContext {
+		public int TryRenderCopy(IntPtr ptrRenderer, IntPtr ptrTexture) => this.TryRenderCopy(ptrRenderer, ptrTexture, sourceRect: null, destinationRect: null);
+		public int TryRenderCopy(IntPtr ptrRenderer, IntPtr ptrTexture, SdlRect? sourceRect, SdlRect? destinationRect) {
+			int result;
+			if (sourceRect.HasValue && destinationRect.HasValue) {
+				var sdlSrcRect = (SDL_Rect)sourceRect.Value;
+				var sdlDstRect = (SDL_Rect)destinationRect.Value;
+				result = SDL_RenderCopy(ptrRenderer, ptrTexture, ref sdlSrcRect, ref sdlDstRect);
+			}
+			else if (sourceRect.HasValue && !destinationRect.HasValue) {
+				var sdlSrcRect = (SDL_Rect)sourceRect.Value;
+				result = SDL_RenderCopy(ptrRenderer, ptrTexture, ref sdlSrcRect, IntPtr.Zero);
+			}
+			else if (!sourceRect.HasValue && destinationRect.HasValue) {
+				var sdlDstRect = (SDL_Rect)destinationRect.Value;
+				result = SDL_RenderCopy(ptrRenderer, ptrTexture, IntPtr.Zero, ref sdlDstRect);
+			}
+			else if (!sourceRect.HasValue && !destinationRect.HasValue) {
+				result = SDL_RenderCopy(ptrRenderer, ptrTexture, IntPtr.Zero, IntPtr.Zero);
+			}
+			else {
+				throw new NotImplementedException("The combination of parameters is not implemented.");
+			}
+
+			return result;
+		}
+
+		public void RenderCopy(IntPtr ptrRenderer, IntPtr ptrTexture) {
+			this.ThrowIfSdlCallFails(this.TryRenderCopy, ptrRenderer, ptrTexture);
+		}
+		public void RenderCopy(IntPtr ptrRenderer, IntPtr ptrTexture, SdlRect? sourceRect, SdlRect? destinationRect) {
+			this.ThrowIfSdlCallFails(this.TryRenderCopy, ptrRenderer, ptrTexture, sourceRect, destinationRect);
+		}
+	}
+	#endregion RenderCopy
+
+	#region RenderPresent
+	partial class SdlContext {
+		public int TryRenderPresent(IntPtr ptrRenderer) {
+			SDL_RenderPresent(ptrRenderer);
+			return 0;
+		}
+
+		public void RenderPresent(IntPtr ptrRenderer) => this.ThrowIfSdlCallFails(this.TryRenderPresent, ptrRenderer);
+	}
+	#endregion RenderPresent
+
+
+	#region CreateTextureFromSufrace
+	partial class SdlContext {
+		public SdlTexture TryCreateTextureFromSufrace(IntPtr ptrRenderer, IntPtr ptrSurface) {
+			var ptr = SDL_CreateTextureFromSurface(ptrRenderer, ptrSurface);
+			if (IntPtr.Zero == ptr) { return null; }
+
+			return new SdlTexture(ptr, true);
+		}
+
+		public SdlTexture CreateTextureFromSufrace(IntPtr ptrRenderer, IntPtr ptrSurface) {
+			return this.ThrowIfSdlFuncFails(this.TryCreateTextureFromSufrace, ptrRenderer, ptrSurface);
+		}
+	}
+	#endregion CreateTextureFromSufrace
+
+	#region QueryTexture
+	partial class SdlContext {
+		public SdlTextureInfo? TryQueryTexture(IntPtr ptrTexture) {
+			uint format;
+			int access, width, height;
+			var result = SDL_QueryTexture(ptrTexture, out format, out access, out width, out height);
+			if (0 != result) { return null; }
+
+			return new SdlTextureInfo {
+				Format = format,
+				Access = access,
+				Width = width,
+				Height = height
+			};
+		}
+		public SdlTextureInfo QueryTexture(IntPtr ptrTexture) {
+			return this.ThrowIfSdlFuncFails(this.TryQueryTexture, ptrTexture).Value;
+		}
+	}
+	#endregion QueryTexture
 }

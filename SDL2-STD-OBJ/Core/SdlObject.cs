@@ -11,6 +11,7 @@ namespace ObjectiveSdl2.Core
 		private readonly SafeHandle handle;
 		SafeHandle ISdlObject.Handle => this.handle;
 
+		protected IntPtr GetPointer() => this.handle.DangerousGetHandle();
 		protected IntPtr GetValidHandle() {
 			var result = this.handle;
 			if (result is null || result.IsInvalid) {
