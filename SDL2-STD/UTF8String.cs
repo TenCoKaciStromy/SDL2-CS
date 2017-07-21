@@ -25,7 +25,6 @@
 using System;
 using System.Text;
 using System.Runtime.InteropServices;
-using System.Diagnostics.Contracts;
 
 namespace SDL2
 {
@@ -41,7 +40,7 @@ namespace SDL2
 		/// <param name="s">.NET string to wrap into a UTF8 sequence of unmanaged bytes.</param>
 		public Utf8String(string s)
 		{
-			Contract.Requires(s != null, "s is not null");
+			if (s is null) { throw new ArgumentNullException(nameof(s)); }
 
 				// This code is not optimized. One could actually read the string and copy the content
 				// directly in _handle without hitting any allocation. This would require us to include
@@ -64,9 +63,9 @@ namespace SDL2
 			_capacity = nb + 1;
 			_handle = lPtr;
 
-			Contract.Ensures((_handle != IntPtr.Zero), "handle set");
-			Contract.Ensures((_capacity >= s.Length + 1), "capacity_greater_than_input");
-			Contract.Ensures(ReferenceEquals(s, String()) || (String().Equals(s)), "string_set");
+			//Contract.Ensures((_handle != IntPtr.Zero), "handle set");
+			//Contract.Ensures((_capacity >= s.Length + 1), "capacity_greater_than_input");
+			//Contract.Ensures(ReferenceEquals(s, String()) || (String().Equals(s)), "string_set");
 		}
 #endregion
 
@@ -233,7 +232,7 @@ namespace SDL2
 				Dispose();
 			}
 
-			Contract.Ensures(String().Equals(s), "string_set");
+			//Contract.Ensures(String().Equals(s), "string_set");
 		}
 #endregion
 
