@@ -5,8 +5,8 @@ using ObjectiveSdl2;
 
 namespace UiQuick {
 	public interface IControl {
-		bool IsContainer { get; }
-
-		void Render(SdlRenderer renderer);
+		void Render(IRenderContext context);
+		event EventHandler<RenderEventArgs> BeforeRender;
+		event EventHandler<RenderEventArgs> AfterRender;
 	}
 }
