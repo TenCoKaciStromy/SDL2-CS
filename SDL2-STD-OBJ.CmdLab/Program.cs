@@ -38,9 +38,9 @@ namespace SDL2_STD_OBJ.CmdLab
 					Console.WriteLine(_event.window.windowEvent);
 				}
 
-				return false;
+				return SdlEventHandlerResult.None;
 			};
-			loop.Run();
+			loop.Run(SdlContext.Default);
 		}
 
 		static void Main_A(string[] args) {

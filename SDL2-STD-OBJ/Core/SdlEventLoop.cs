@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using ObjectiveSdl2.Core.Registers;
 
 namespace ObjectiveSdl2.Core {
 	public sealed class SdlEventLoop {
@@ -11,7 +12,12 @@ namespace ObjectiveSdl2.Core {
 		private bool isRunning;
 		public bool IsRunning => this.isRunning;
 
-		public bool Run() {
+		private SdlContext context;
+		public SdlContext Context => this.context;
+
+		public bool Run(SdlContext context) {
+			if (context is null) { throw new ArgumentNullException(nameof(context)); }
+
 			lock (this.syncRoot) {
 				if (this.isRunning) { return false; }
 
@@ -19,6 +25,9 @@ namespace ObjectiveSdl2.Core {
 					this.isRunning = true;
 					Monitor.Exit(this.syncRoot);
 					try {
+						this.context = context;
+						this.PrepareRegisters();
+
 						this.RunInternal();
 						return true;
 					}
@@ -28,33 +37,60 @@ namespace ObjectiveSdl2.Core {
 				}
 				finally {
 					this.isRunning = false;
+					this.context = null;
+					this.ClearRegisters();
 				}
 			}
+		}
+
+		private WindowsRegister regWindows;
+		private void PrepareRegisters() {
+			this.regWindows = context.Registers.Windows;
+		}
+		private void ClearRegisters() {
+			this.regWindows = null;
 		}
 
 		private void RunInternal() {
 			bool quit = false;
 			while (!quit) {
 				while (0 < SDL2.SDL.SDL_PollEvent(out var _event)) {
-					bool stopHandling = false;
+					bool skipHandling = false;
 					foreach (var handler in this.eventHandlers) {
-						if (handler(_event)) {
-							stopHandling = true;
+						var rslt = handler(_event);
+						if (SdlEventHandlerResult.Skip == rslt) {
+							skipHandling = true;
+						}
+						else if (SdlEventHandlerResult.SkipAndStop == rslt) {
+							skipHandling = true;
 							break;
 						}
 					}
-					if (stopHandling) {
+					if (skipHandling) {
 						continue;
 					}
 
-					if (_event.type == SDL2.SDL.SDL_EventType.SDL_QUIT) {
+					var eType = _event.type;
+					if (SDL2.SDL.SDL_EventType.SDL_QUIT == eType) {
 						quit = true;
 						break;
 					}
+					else if (SDL2.SDL.SDL_EventType.SDL_WINDOWEVENT == eType) {
+						this.HandleWindowEvent(_event.window);
+					}
 				}
 
-				this.Idle?.Invoke(this, EventArgs.Empty);
+				if (!quit) {
+					this.Idle?.Invoke(this, EventArgs.Empty);
+				}
 			}
+		}
+
+		private void HandleWindowEvent(SDL2.SDL.SDL_WindowEvent winEvent) {
+			var window = this.regWindows.Find(winEvent.windowID);
+			if (window is null) { return; }
+
+			window.HandleLoopEvent(winEvent);
 		}
 
 		public event EventHandler Idle;

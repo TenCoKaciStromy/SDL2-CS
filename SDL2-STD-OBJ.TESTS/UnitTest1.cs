@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ObjectiveSdl2;
+using ObjectiveSdl2.Core;
 
 namespace SDL2_STD_OBJ.TESTS {
 	[TestClass]
