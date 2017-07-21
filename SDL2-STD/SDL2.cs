@@ -3184,8 +3184,7 @@ Commented while waiting for RuntimeArgumentHandle to be in CoreFX.
 		[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int SDL_FillRect(
 			IntPtr dst,
-			ref SDL_Rect rect,
-			uint color
+			ref SDL_Rect rect
 		);
 
 		/* dst refers to an SDL_Surface*.
@@ -3194,9 +3193,26 @@ Commented while waiting for RuntimeArgumentHandle to be in CoreFX.
 		[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int SDL_FillRect(
 			IntPtr dst,
-			IntPtr rect,
-			uint color
+			IntPtr rect
 		);
+
+		///* dst refers to an SDL_Surface* */
+		//[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
+		//public static extern int SDL_FillRect(
+		//	IntPtr dst,
+		//	ref SDL_Rect rect,
+		//	uint color
+		//);
+
+		///* dst refers to an SDL_Surface*.
+		// * This overload allows passing NULL to rect.
+		// */
+		//[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
+		//public static extern int SDL_FillRect(
+		//	IntPtr dst,
+		//	IntPtr rect,
+		//	uint color
+		//);
 
 		/* dst refers to an SDL_Surface* */
 		[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]

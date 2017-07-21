@@ -87,5 +87,9 @@ namespace SDL2_STD_OBJ.TESTS {
 				return;
 			});
 		}
+
+		[TestMethod, Ignore]
+		public void asdf() {
+		}
 	}
 }

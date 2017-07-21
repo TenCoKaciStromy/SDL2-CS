@@ -9,7 +9,44 @@ namespace SDL2_STD_OBJ.CmdLab
     {
         static void Main(string[] args)
         {
-			Main_B(args);
+			Main_C(args);
+		}
+
+		static void Main_C(string[] args) {
+			SdlContext.Default.Initialize(SdlInitializationFlags.Video);
+
+			var window = SdlWindow.Create("My window", new SdlVector(10, 20), new SdlVector(1280, 800));
+			var renderer = window.Renderer;
+
+			var bmp = SdlSurface.LoadFromBmpFile(@"C:\Users\TcKs\Pictures\screenshot.bmp");
+			var tex = renderer.CreateTexture(bmp);
+
+			renderer.DrawColor = new SdlRgba(0, 255, 0);
+			renderer.Clear();
+			renderer.CopyFrom(tex);
+			renderer.DrawColor = new SdlRgba(255, 0, 0);
+			renderer.DrawRect(new SdlRect(20, 30, 50, 75));
+			renderer.FillRect(new SdlRect(10, 20, 100, 200));
+			renderer.Present();
+
+			window.Show();
+			window.Raise();
+
+			var loop = new SdlEventLoop();
+			loop.EventHandlers += (_event) => {
+				Console.WriteLine(_event.type);
+
+				if (_event.type == SDL2.SDL.SDL_EventType.SDL_WINDOWEVENT) {
+					Console.WriteLine("WIN: " + _event.window.windowEvent);
+				}
+				else if (_event.type == SDL2.SDL.SDL_EventType.SDL_MOUSEMOTION) {
+					renderer.DrawPoint(_event.motion.x, _event.motion.y);
+					renderer.Present();
+				}
+
+				return SdlEventHandlerResult.None;
+			};
+			loop.Run(SdlContext.Default);
 		}
 
 		static void Main_B(string[] args) {

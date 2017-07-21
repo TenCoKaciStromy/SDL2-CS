@@ -86,6 +86,13 @@ namespace ObjectiveSdl2.Core {
 			var prefix = methodName + ": ";
 			throw SdlNativeException.CreateFromLastSdlError(prefix);
 		}
+		public static void ThrowIfSdlCallFails<TArg0, TArg1, TArg2, TArg3, TArg4>(Func<TArg0, TArg1, TArg2, TArg3, TArg4, int> tryFunction, TArg0 arg0, TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4, [CallerMemberName]string methodName = null) {
+			var resultCode = tryFunction(arg0, arg1, arg2, arg3, arg4);
+			if (0 == resultCode) { return; }
+
+			var prefix = methodName + ": ";
+			throw SdlNativeException.CreateFromLastSdlError(prefix);
+		}
 
 		public static TResult ThrowIfSdlFuncFails<TResult>(Func<TResult> tryFunction, [CallerMemberName]string methodName = null) {
 			var result = tryFunction();
