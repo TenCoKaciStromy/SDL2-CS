@@ -4,6 +4,6 @@ using System.Text;
 
 namespace UiQuick.Drawing {
 	public interface IHasAfterRenderEvent {
-		event EventHandler<RenderEventArgs> AfterRender;
+		event RenderDelegate AfterRender;
 	}
 }

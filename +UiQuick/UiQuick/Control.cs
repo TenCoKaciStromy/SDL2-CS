@@ -1,44 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UiQuick.Common;
+using UiQuick.Drawing;
 
 namespace UiQuick {
-	public class Control : IControl, IChildControl {
+	public class Control : IControl, IChildControl, IHasBackground, IHasForeground {
 		#region IControl
 		public virtual void Render(IRenderContext context) {
 			if (context is null) { throw new ArgumentNullException(nameof(context)); }
 
-			var beforeEvent = this.beforeRender;
-			var afterEvent = this.afterRender;
-
-			if (beforeRender is null && afterRender is null) {
-				this.RenderInternal(context);
-			}
-			else {
-				var args = new RenderEventArgs(context);
-				beforeEvent?.Invoke(this, args);
-				this.RenderInternal(context);
-				afterEvent?.Invoke(this, args);
-			}
+			this.beforeRender?.Invoke(this, context);
+			this.RenderInternal(context);
+			this.afterRender?.Invoke(this, context);
 		}
 		protected virtual void RenderInternal(IRenderContext context) {
+			this.RenderInternalBackground(context);
+			this.RenderInternalContent(context);
+			this.RenderInternalForeground(context);
+		}
+		protected virtual void RenderInternalBackground(IRenderContext context) {
+			this.beforeBackgroundRender?.Invoke(this, context);
+			this.background?.Render(context);
+			this.afterBackgroundRender?.Invoke(this, context);
+		}
+		protected virtual void RenderInternalContent(IRenderContext context) {
 			// do nothing ... good to override
 		}
+		protected virtual void RenderInternalForeground(IRenderContext context) {
+			this.beforeForegroundRender?.Invoke(this, context);
+			this.foreground?.Render(context);
+			this.afterForegroundRender?.Invoke(this, context);
+		}
 
-		protected event EventHandler<RenderEventArgs> beforeRender;
-		public event EventHandler<RenderEventArgs> BeforeRender {
+		protected event RenderDelegate beforeRender;
+		public event RenderDelegate BeforeRender {
 			add { this.beforeRender += value; }
 			remove { this.beforeRender -= value; }
 		}
 
-		protected event EventHandler<RenderEventArgs> afterRender;
-		public event EventHandler<RenderEventArgs> AfterRender {
+		protected event RenderDelegate afterRender;
+		public event RenderDelegate AfterRender {
 			add { this.afterRender += value; }
 			remove { this.afterRender -= value; }
 		}
 		#endregion IControl
 
-		#region IChild
+		#region IChildControl
 		private IChildControlCollection parentCollection;
 		public IChildControlCollection ParentCollection {
 			get => this.parentCollection;
@@ -62,6 +70,44 @@ namespace UiQuick {
 			this.parentCollection = null;
 			return true;
 		}
-		#endregion IChild
+		#endregion IChildControl
+
+		#region IHasBackground
+		private IRenderable background;
+		public IRenderable Background {
+			get => this.background;
+			set => ComponentHelper.SetProperty(this, ref this.background, value, this.BeforeBackgroundChange, this.AfterBackgroundChange);
+		}
+		public event EventHandler BeforeBackgroundChange;
+		public event EventHandler AfterBackgroundChange;
+
+		protected event RenderDelegate beforeBackgroundRender;
+		public event RenderDelegate BeforeBackgroundRender;
+
+		protected event RenderDelegate afterBackgroundRender;
+		public event RenderDelegate AfterBackgroundRender;
+		#endregion IHasBackground
+
+		#region IHasForeground
+		private IRenderable foreground;
+		public IRenderable Foreground {
+			get => this.foreground;
+			set => ComponentHelper.SetProperty(this, ref this.foreground, value, this.BeforeForegroundChange, this.AfterForegroundChange);
+		}
+		public event EventHandler BeforeForegroundChange;
+		public event EventHandler AfterForegroundChange;
+
+		protected event RenderDelegate beforeForegroundRender;
+		public event RenderDelegate BeforeForegroundRender {
+			add => this.beforeForegroundRender += value;
+			remove => this.beforeForegroundRender -= value;
+		}
+
+		protected event RenderDelegate afterForegroundRender;
+		public event RenderDelegate AfterForegroundRender {
+			add => this.afterForegroundRender += value;
+			remove => this.afterForegroundRender -= value;
+		}
+		#endregion IHasForeground
 	}
 }
